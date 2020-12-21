@@ -336,4 +336,4 @@ where m.mId = cc.mId and c.cId = cc.cId
 and c.cName = "amisulpride";
 
 
- -- end of sql query for extracting data and end of file --
+ -- end of sql query for extracting data and end of file bla bla --
