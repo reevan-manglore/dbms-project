@@ -336,7 +336,7 @@ where m.mId = cc.mId and c.cId = cc.cId
 and c.cName = "amisulpride";
 
 
--- to get all results for search boxes secondory queries 
+-- to get all results for auto completeion secondory queries 
 
 
 -- to get all names of disease
