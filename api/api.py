@@ -17,7 +17,7 @@ CORS(app);
 api = Api(app);
 
 
-class Symptoms(Resource):
+class Disease(Resource):
     def get(self):
         disease = request.args.get("symptoms");
         disease = disease.strip("[]").split(",");
@@ -39,7 +39,8 @@ class Symptoms(Resource):
         return record;
 
 
-api.add_resource(Symptoms,"/symptoms");
+
+api.add_resource(Disease,"/disease");
 
 if __name__ =="__main__":
     app.run(debug=True);
