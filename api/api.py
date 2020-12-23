@@ -62,8 +62,13 @@ class Symptoms(Resource):
         return result;
         
 
+<<<<<<< HEAD
 api.add_resource(Disease,"/disease");
 api.add_resource(Symptoms,"/symptoms")
+=======
+
+api.add_resource(Disease,"/disease");
+>>>>>>> e0621a9c7c26f11ad9ce7c784f3d2bf535a17233
 
 if __name__ =="__main__":
     app.run(debug=True);
