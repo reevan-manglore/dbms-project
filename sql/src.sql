@@ -336,4 +336,35 @@ where m.mId = cc.mId and c.cId = cc.cId
 and c.cName = "amisulpride";
 
 
+-- to get all results for search boxes secondory queries 
+
+
+-- to get all names of disease
+
+select dName
+from disease
+where dName
+like "p%";
+
+-- to get all symptoms
+
+select sName
+from symptoms
+where sName
+like "f%";
+
+-- to get all medicine names
+
+select mName
+from medicine
+where mName
+like "m%";
+
+-- to get all chemical names
+select cName
+from chemicals
+where cName
+like "a%";
+
+ 
  -- end of sql query for extracting data and end of file bla bla --
