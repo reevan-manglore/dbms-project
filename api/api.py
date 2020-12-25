@@ -110,10 +110,14 @@ class SimilarMedicines(Resource):
         query = """
             select mName,modeOfAdministration
             from medicine
-            where mId in(
-	            select similar
-	            from  similarMedicine
-	            where mId = ( select mId from medicine where mName = "%s") 
+            where mId in (
+	        select similar
+	        from  similarMedicine
+	        where mId in ( select m.mId 
+				 from medicine m,similarMedicine s 
+                 where m.mId = s.similar
+                 and m.mName = "%s"
+				)
             );
         """
         name = request.args.get("medicine")
