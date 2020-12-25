@@ -4,95 +4,104 @@ use project;
 
 
 create table if not exists disease (
-	dId integer PRIMARY KEY,
-    dName varchar(40),
+	dId integer PRIMARY KEY auto_increment ,
+    dName varchar(40) not null,
     dType varchar(50)
 );
 
 create table if not exists symptoms (
-	sId integer PRIMARY KEY,
-    sName varchar(40)
+	sId integer PRIMARY KEY auto_increment,
+    sName varchar(40) not null
 );
 
 create table if not exists diseaseSymptoms (
-	dId integer, 
-    sId integer,
-    sPart varchar(50),
-    foreign key (dId) references disease(dId),
-    foreign key (sId) references symptoms(sId)
+	dId integer not null, 
+    sId integer not null,
+    sPart varchar(50) default "entry-missing",
+    foreign key (dId) references disease(dId) on delete cascade,
+    foreign key (sId) references symptoms(sId) on delete cascade,
+    unique(dId,sId)
 );
 
 create table if not exists medicine (
-	mId integer, 
-	mName varchar(40),
-    modeOfAdministration varchar(40),
+	mId integer auto_increment, 
+	mName varchar(40) not null,
+    modeOfAdministration varchar(40) default "entry-missing",
     PRIMARY KEY (mId)
 );
 
 create table if not exists chemicals (
-	cId integer,
-    cName varchar(40),
+	cId integer auto_increment,
+    cName varchar(40) not null,
     PRIMARY KEY (cId)
-);
+); 
 
 create table if not exists medicineContents (
-	mId integer,
-	cId integer,
-	foreign key (mId) references  medicine(mId),
-	foreign key (cId) references chemicals(cId)
+	mId integer not null,
+	cId integer not null,
+	foreign key (mId) references  medicine(mId) on delete cascade,
+	foreign key (cId) references chemicals(cId) on delete cascade,
+    unique(mId,cId)
 );
 
 create table if not exists treatment (
-	dId integer,
-    mId integer,
-    foreign key (dId) references disease(dId),
-	foreign key (mId) references medicine(mId)
+	dId integer not null,
+    mId integer not null,
+    foreign key (dId) references disease(dId) on delete cascade,
+	foreign key (mId) references medicine(mId) on delete cascade,
+    unique(dId,mId)
 );
 
 create table if not exists similarMedicine (
-	mId integer,
-    similar integer,
-    foreign key (mId) references medicine(mId),
-    foreign key (similar) references medicine(mId)
+	mId integer not null,
+    similar integer not null,
+    foreign key (mId) references medicine(mId) on delete cascade,
+    foreign key (similar) references medicine(mId) on delete cascade,
+    unique(mId,similar)
+);
+
+create table if not exists temp(
+	col1 varchar(50),
+	col2 varchar(50)
 );
 
 -- start of sql insert statement and  insertion of dummy data --
 
-insert into disease values (1,"pneumonia","infectious");
+insert into disease (dName,dType) values ("pneumonia","infectious");
 
-insert into disease values (2,"schizophrenia","mental");
+insert into disease (dName,dType) values ("schizophrenia","mental");
 
-insert into disease values (3,"oral thrush","oral");
+insert into disease (dName,dType) values ("oral thrush","oral");
 
 -- next insertion into symptoms table 
 
-insert into symptoms values (1,"chest pain");
+insert into symptoms (sName) values ("chest pain");
 
-insert into symptoms values (2,"fever");
+insert into symptoms (sName) values ("fever");
 
-insert into symptoms values (3,"fatigue");
+insert into symptoms (sName) values ("fatigue");
 
-insert into symptoms values (4,"nausea");
+insert into symptoms (sName) values ("nausea");
 
-insert into symptoms values (5,"chills");
+insert into symptoms (sName) values ("chills");
 
-insert into symptoms values (6,"memory loss");
+insert into symptoms (sName) values ("memory loss");
 
-insert into symptoms values (7,"hallucination");
+insert into symptoms (sName) values ("hallucination");
 
-insert into symptoms values (8,"depression");
+insert into symptoms (sName) values ("depression");
 
-insert into symptoms values (9,"anger");
+insert into symptoms (sName) values ("anger");
 
-insert into symptoms values (10,"white patches");
+insert into symptoms (sName) values ("white patches");
 
-insert into symptoms values (11,"loss of taste");
+insert into symptoms (sName) values ("loss of taste");
 
-insert into symptoms values (12,"cracks");
+insert into symptoms (sName) values ("cracks");
 
-insert into symptoms values (13,"burning");
+insert into symptoms (sName) values ("burning");
 
-insert into symptoms values (14,"pain");
+insert into symptoms (sName) values ("pain");
 
 
 -- next insertion into diseaseSymptoms table
@@ -127,41 +136,41 @@ insert into diseaseSymptoms values (3,14,"mouth");
 
 -- next insertion into medicine table
 
-insert into medicine values (1,"amoxicillin","oral");
+insert into medicine (mName,modeOfAdministration) values ("amoxicillin","oral");
 
-insert into medicine values (2,"wymox","oral");
+insert into medicine (mName,modeOfAdministration) values ("wymox","oral");
 
-insert into medicine values (3,"mox","oral");
+insert into medicine (mName,modeOfAdministration) values ("mox","oral");
 
-insert into medicine values (4,"erox","oral");
+insert into medicine (mName,modeOfAdministration) values ("erox","oral");
 
-insert into medicine values (5,"cipmox","oral");
+insert into medicine (mName,modeOfAdministration) values ("cipmox","oral");
 
-insert into medicine values (6,"soltus","oral");
+insert into medicine (mName,modeOfAdministration) values ("soltus","oral");
 
-insert into medicine values (7,"maxpride","oral");
+insert into medicine (mName,modeOfAdministration) values ("maxpride","oral");
 
-insert into medicine values (8,"silpitac","oral");
+insert into medicine (mName,modeOfAdministration) values ("silpitac","oral");
 
-insert into medicine values (9,"solian","oral");
+insert into medicine (mName,modeOfAdministration) values ("solian","oral");
 
-insert into medicine values (10,"af 150","oral");
+insert into medicine (mName,modeOfAdministration) values ("af 150","oral");
 
-insert into medicine values (11,"flika","oral");
+insert into medicine (mName,modeOfAdministration) values ("flika","oral");
 
-insert into medicine values (12,"fluco","oral");
+insert into medicine (mName,modeOfAdministration) values ("fluco","oral");
 
-insert into medicine values (13,"cone","oral");
+insert into medicine (mName,modeOfAdministration) values ("cone","oral");
 
 
 
 -- next insertion into chemicals table
 
-insert into chemicals values (1,"amoxicillin");
+insert into chemicals (cName) values ("amoxicillin");
 
-insert into chemicals values (2,"amisulpride");
+insert into chemicals (cName) values ("amisulpride");
 
-insert into chemicals values (3,"fluconazole");
+insert into chemicals (cName) values ("fluconazole");
 
 
 -- next insertion into medicineContents table
@@ -216,6 +225,7 @@ insert into treatment values (3,13);
 
 
 -- next insertion into similarMedicine table
+insert into similarMedicine values (1,1);
 
 insert into similarMedicine values (1,2);
 
@@ -225,53 +235,21 @@ insert into similarMedicine values (1,4);
 
 insert into similarMedicine values (1,5);
 
-insert into similarMedicine values (2,1);
-
-insert into similarMedicine values (2,3);
-
-insert into similarMedicine values (2,4);
-
-insert into similarMedicine values (2,5);
-
-insert into similarMedicine values (3,1);
-
-insert into similarMedicine values (3,2);
-
-insert into similarMedicine values (3,4);
-
-insert into similarMedicine values (3,5);
+insert into similarMedicine values (6,6);
 
 insert into similarMedicine values (6,7);
 
+insert into similarMedicine values (6,8);
+
 insert into similarMedicine values (6,9);
 
-insert into similarMedicine values (7,8);
-
-insert into similarMedicine values (7,9);
+insert into similarMedicine values (10,10);
 
 insert into similarMedicine values (10,11);
 
 insert into similarMedicine values (10,12);
 
 insert into similarMedicine values (10,13);
-
-insert into similarMedicine values (11,10);
-
-insert into similarMedicine values (11,12);
-
-insert into similarMedicine values (11,13);
-
-insert into similarMedicine values (12,10);
-
-insert into similarMedicine values (12,11);
-
-insert into similarMedicine values (12,13);
-
-insert into similarMedicine values (13,10);
-
-insert into similarMedicine values (13,11);
-
-insert into similarMedicine values (13,12);
 
 
 -- end of sql query insert statements  --
@@ -319,9 +297,13 @@ from medicine
 where mId in(
 	select similar
 	from  similarMedicine
-	where mId = ( select mId from medicine where mName = "amoxicillin") 
+	where mId in ( select m.mId 
+				  from medicine m,similarMedicine s 
+                  where m.mId = s.similar
+                  and m.mName = "amoxicillin"
+				)
 );
-
+     
 select cName
 from chemicals
 where cId in(
@@ -366,5 +348,117 @@ from chemicals
 where cName
 like "a%";
 
- 
- -- end of sql query for extracting data and end of file bla bla --
+
+-- start of mysql procedure
+
+DELIMITER //
+create procedure  insertDisease(in name varchar(50),in type varchar(50))
+BEGIN
+	declare test integer default 0;
+    declare lDid integer default 0; -- l prefix for local disease id
+    declare lSid integer default 0; -- l prefix for local symptom id
+	declare finished integer default 0;
+    declare col1 varchar(50) default "";
+    declare col2 varchar(50) default "";
+	declare itr cursor for select * from temp;
+    declare continue handler for not found set finished = 1;
+    select exists(select * from disease d where d.dName = name) into test;
+    if test = 0 then
+		insert into disease (dName,dType) values (name,type);
+	end if;
+    select dId from disease where dName = name into lDid;
+    open itr;
+    insertSymptoms: loop
+		fetch itr into col1,col2;
+        if finished = 1 then
+			delete from temp;    
+			leave insertSymptoms;
+		end if;
+        SET test = 0;
+        select exists(select * from symptoms where sName = col1) into test;
+        if test = 0 then
+			insert into symptoms (sName) values (col1);
+        end if;
+        select sId from symptoms where sName = col1 into lSid;
+        insert into diseaseSymptoms values (lDid,lSid,col2);
+        
+    end loop insertSymptoms;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE insertMedicine(in diseaseName varchar(50)) -- throws error if disease name is not present in database
+startFunc:BEGIN
+	declare finished integer default 0;
+    declare test integer default 0;
+    declare lDId integer default 0;
+    declare lMId integer default 0;
+    declare firstDrug integer default 0;
+    declare col1 varchar(50) default "";
+    declare col2 varchar(50) default "";
+    declare itr cursor for select * from temp;
+    declare continue handler for not found set finished = 1;
+    select exists(select * from disease d where d.dName = diseaseName) into test;
+    if test = 0 then
+		 delete from temp;
+		 leave startFunc;
+	end if;
+    select dId  from disease d where d.dName = diseaseName into lDId;
+    open itr;
+    extractMedicine:loop
+		 set test = 0;
+         fetch itr into col1,col2;
+         if finished = 1 then
+			delete from temp;
+			leave extractMedicine;
+         end if;
+         select exists(select * from medicine m where mName = col1) into test;
+         if test = 0 then
+			insert into medicine (mName,modeOfAdministration) values (col1,col2);
+         end if;
+		select mId from medicine where mName = col1 into lMId;
+        if firstDrug = 0 then
+			set firstDrug = lMId; -- in order to get first drug so we can add to similar medicines table in order to find relation based on first drug
+        end if;
+        insert into treatment values (lDId,lMId);
+        insert into similarMedicine values(firstDrug,lMId);
+         
+    end loop extractMedicine;
+END//
+DELIMITER ;
+
+
+
+
+DELIMITER //
+CREATE PROCEDURE insertChemical(in medicineName varchar(50))
+	func:BEGIN
+		declare finished integer default 0;
+        declare test integer default 0;
+        declare col1 varchar(50) default "";
+		declare col2 varchar(50) default "";
+        declare lMId integer default 0;
+        declare lCId integer default 0;
+        declare itr cursor for select * from temp;  -- either to change or to keep as it is
+        declare continue handler for not found set finished = 1;
+        select mId from medicine where mName = medicineName into lMId;
+        if lMId = 0 then -- if medicine entry is not entered into database 
+			leave func;
+        end if;
+        open itr;
+        getChemical:loop
+			set test = 0;
+			fetch itr into col1,col2;
+            if finished = 1 then
+				delete from temp;
+                leave getChemical;
+            end if;
+            select exists(select * from chemicals where cName = col1) into test;
+            if test = 0 then
+				insert into chemicals (cName) values (col1);
+            end if;
+            select cId from chemicals where cName = col1 into lCId;
+            insert into medicineContents values (lMId,lCId);
+        end loop getChemical;
+	END//
+DELIMITER ;
