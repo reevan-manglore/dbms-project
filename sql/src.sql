@@ -357,6 +357,7 @@ BEGIN
 	declare test integer default 0;
     declare lDid integer default 0; -- l prefix for local disease id
     declare lSid integer default 0; -- l prefix for local symptom id
+    declare hasField integer default 0;
 	declare finished integer default 0;
     declare col1 varchar(50) default "";
     declare col2 varchar(50) default "";
@@ -375,13 +376,16 @@ BEGIN
 			leave insertSymptoms;
 		end if;
         SET test = 0;
+        set hasField = 0;
         select exists(select * from symptoms where sName = col1) into test;
         if test = 0 then
 			insert into symptoms (sName) values (col1);
         end if;
         select sId from symptoms where sName = col1 into lSid;
-        insert into diseaseSymptoms values (lDid,lSid,col2);
-        
+        select exists(select * from diseaseSymptoms where dId = lDId and sId = lSid ) into hasField;
+        if hasField = 0 then
+            insert into diseaseSymptoms values (lDid,lSid,col2);
+        end if;
     end loop insertSymptoms;
 END//
 DELIMITER ;
@@ -389,6 +393,7 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE insertMedicine(in diseaseName varchar(50)) -- throws error if disease name is not present in database
 startFunc:BEGIN
+    declare hasField integer default 0;
 	declare finished integer default 0;
     declare test integer default 0;
     declare lDId integer default 0;
@@ -407,6 +412,7 @@ startFunc:BEGIN
     open itr;
     extractMedicine:loop
 		 set test = 0;
+         set hasField = 0;
          fetch itr into col1,col2;
          if finished = 1 then
 			delete from temp;
@@ -420,9 +426,16 @@ startFunc:BEGIN
         if firstDrug = 0 then
 			set firstDrug = lMId; -- in order to get first drug so we can add to similar medicines table in order to find relation based on first drug
         end if;
-        insert into treatment values (lDId,lMId);
-        insert into similarMedicine values(firstDrug,lMId);
-         
+        select exists(select * from treatment where dId = lDId and mId = lMId ) into hasField ;
+        if hasField = 0 then
+            insert into treatment values (lDId,lMId);
+        END if;
+        SET hasField = 0;
+        select exists(select * from similarMedicine where mId = firstDrug and similar =lMId ) into hasField;
+        if hasField = 0 then
+            insert into similarMedicine values(firstDrug,lMId);
+        end if;
+    
     end loop extractMedicine;
 END//
 DELIMITER ;
@@ -433,6 +446,7 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE insertChemical(in medicineName varchar(50))
 	func:BEGIN
+        declare hasField integer default 0;
 		declare finished integer default 0;
         declare test integer default 0;
         declare col1 varchar(50) default "";
@@ -448,6 +462,7 @@ CREATE PROCEDURE insertChemical(in medicineName varchar(50))
         open itr;
         getChemical:loop
 			set test = 0;
+            set hasField = 0;
 			fetch itr into col1,col2;
             if finished = 1 then
 				delete from temp;
@@ -458,7 +473,10 @@ CREATE PROCEDURE insertChemical(in medicineName varchar(50))
 				insert into chemicals (cName) values (col1);
             end if;
             select cId from chemicals where cName = col1 into lCId;
-            insert into medicineContents values (lMId,lCId);
+            select exists(select * from medicineContents where mId = lMId and cId = lCId ) into hasField;
+            if hasField = 0 then
+                insert into medicineContents values (lMId,lCId);
+            end if;
         end loop getChemical;
 	END//
 DELIMITER ;
