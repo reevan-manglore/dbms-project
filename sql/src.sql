@@ -394,6 +394,7 @@ DELIMITER //
 CREATE PROCEDURE insertMedicine(in diseaseName varchar(50)) -- throws error if disease name is not present in database
 startFunc:BEGIN
     declare hasField integer default 0;
+    declare MESSAGE_TEXT varchar(200);-- for throwing exception
 	declare finished integer default 0;
     declare test integer default 0;
     declare lDId integer default 0;
@@ -406,6 +407,8 @@ startFunc:BEGIN
     select exists(select * from disease d where d.dName = diseaseName) into test;
     if test = 0 then
 		 delete from temp;
+         signal SQLSTATE '45000';
+         set MESSAGE_TEXT = "entry for disease is not found"; 
 		 leave startFunc;
 	end if;
     select dId  from disease d where d.dName = diseaseName into lDId;
@@ -435,7 +438,6 @@ startFunc:BEGIN
         if hasField = 0 then
             insert into similarMedicine values(firstDrug,lMId);
         end if;
-    
     end loop extractMedicine;
 END//
 DELIMITER ;
@@ -449,6 +451,7 @@ CREATE PROCEDURE insertChemical(in medicineName varchar(50))
         declare hasField integer default 0;
 		declare finished integer default 0;
         declare test integer default 0;
+        declare MESSAGE_TEXT varchar(200);-- for throwing exception
         declare col1 varchar(50) default "";
 		declare col2 varchar(50) default "";
         declare lMId integer default 0;
@@ -456,8 +459,11 @@ CREATE PROCEDURE insertChemical(in medicineName varchar(50))
         declare itr cursor for select * from temp;  -- either to change or to keep as it is
         declare continue handler for not found set finished = 1;
         select mId from medicine where mName = medicineName into lMId;
-        if lMId = 0 then -- if medicine entry is not entered into database 
-			leave func;
+        if lMId = 0 then -- if medicine entry is not entered into database
+           delete from temp;
+           signal SQLSTATE '45000';
+           set MESSAGE_TEXT = "entry for disease is not found"; 
+		   leave func;
         end if;
         open itr;
         getChemical:loop
