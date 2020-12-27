@@ -1,9 +1,12 @@
+import types
 from flask import Flask, request
-from flask_restful import Api, Resource
+from flask_restful import Api, Resource, reqparse
 from flask_cors import CORS
 import mysql.connector
 from mysql.connector import cursor
 import json
+from posts import post;
+ 
 
 
 db = mysql.connector.connect(
@@ -14,6 +17,8 @@ db = mysql.connector.connect(
 )
 
 app = Flask(__name__)
+
+app.register_blueprint(post,url_prefix = "/post/")
 
 CORS(app)
 
@@ -48,7 +53,7 @@ class Symptoms(Resource):
         print("disease names are = %s" % (disease))
         query = """
             select sName
-            from symptoms 
+            from symptoms
             where sId in (
 	            select ds.sId
                 from diseaseSymptoms ds,disease d
@@ -90,12 +95,12 @@ class Medicine(Resource):
               select mName,modeOfAdministration
               from medicine
               where mId in (
-	                select mId 
+	                select mId
                     from treatment t,disease d
                     where d.dId = t.dId
                     and dName = "%s"
                 );
-  
+
         """
         disease = request.args.get("disease")
         cursor = db.cursor()
@@ -113,8 +118,8 @@ class SimilarMedicines(Resource):
             where mId in (
 	        select similar
 	        from  similarMedicine
-	        where mId in ( select m.mId 
-				 from medicine m,similarMedicine s 
+	        where mId in ( select m.mId
+				 from medicine m,similarMedicine s
                  where m.mId = s.similar
                  and m.mName = "%s"
 				)
@@ -151,7 +156,7 @@ class MedicineWithChemicals(Resource):
         query = """
             select mName
             from medicine m,chemicals c,medicineContents cc
-            where m.mId = cc.mId and c.cId = cc.cId 
+            where m.mId = cc.mId and c.cId = cc.cId
             and c.cName = "%s";
          """
         cursor = db.cursor()
@@ -185,6 +190,9 @@ class AutoCompletion(Resource):
             return {"message": "error occured"}, 500
         result = cursor.fetchall()
         return result
+
+ 
+
 
 
 api.add_resource(Disease, "/disease/")
