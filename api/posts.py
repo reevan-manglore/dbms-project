@@ -52,6 +52,7 @@ class AddDisease(Resource):
             cursor.close();
             db.close();
         except mysql.connector.Error as err:
+            print(err.msg);
             if err.errno == 2002:
                 return {"message":"there was error while trying to connect"},500
             if cursor != None:#close if cursor exists
@@ -67,6 +68,14 @@ class AddDisease(Resource):
                 return{"message":"there was referential integrity error"},400
             else:
                 return{"message":err.msg},400
+        except Exception as e:
+                print(e);
+                if cursor != None:
+                    cursor.rollback();
+                    cursor.close();
+                if db !=None:
+                    db.close();
+                return {"message":e},400
         return {"message":"success"},100
 
     def insertDisease(self,dName,dType):
@@ -85,12 +94,21 @@ class AddDisease(Resource):
             cursor.close();
             db.close();
         except mysql.connector.Error as err:
+            print(err.msg);
             if cursor != None:
                 cursor.rollback();
                 cursor.close();
             if db !=None:
                 db.close();
             return {"message":err.msg},400
+        except Exception as e:
+                print(e);
+                if cursor != None:
+                    cursor.rollback();
+                    cursor.close();
+                if db !=None:
+                    db.close();
+                return {"message":e},400
         return {"message":"success"},100
 
     def post(self):
@@ -146,6 +164,7 @@ class AddMedicine(Resource):
             cursor.close();
             db.close();
         except mysql.connector.Error as err:
+            print(err.msg);
             if err.errno == 2002:
                 return {"message":"there was error while trying to connect"},500
             if cursor != None:#close if cursor exists
@@ -161,6 +180,14 @@ class AddMedicine(Resource):
                 return{"message":"there was referential integrity error"},400
             else:
                 return{"message":err.msg},400
+        except Exception as e:
+                print(e);
+                if cursor != None:
+                    cursor.rollback();
+                    cursor.close();
+                if db !=None:
+                    db.close();
+                return {"message":e},500
         return {"message":"success"},100
 
     def insertTreatement(self,dName):
@@ -174,19 +201,28 @@ class AddMedicine(Resource):
                 database='project'
             );
             cursor = db.cursor();
-            cursor.callproc('insertMedicine',(dName));
+            cursor.callproc('insertMedicine',[dName]);
             db.commit();
             cursor.close();
             db.close();
         except mysql.connector.Error as err:
+            print(err);
             if cursor != None:
-                cursor.rollback();
+                db.rollback();
                 cursor.close();
             if db !=None:
                 db.close();
             if err.errno == 1644:
                 return{"message":"disease does not exists in table"},400;
             return {"message":err.msg},400
+        except Exception as e:
+             print(e);
+             if cursor != None:
+                db.rollback();
+                cursor.close();
+             if db !=None:
+                db.close();
+             return {"message":e},500
         return {"message":"success"},100
 
     def getChemicalQuery(self,arg):
@@ -219,6 +255,7 @@ class AddMedicine(Resource):
                 cursor.close();
                 db.close();
             except mysql.connector.Error as err:
+                print(err.msg);
                 if err.errno == 2002:
                     return {"message":"there was error while trying to connect"},500
                 if cursor != None:#close if cursor exists
@@ -234,6 +271,14 @@ class AddMedicine(Resource):
                     return{"message":"there was referential integrity error"},400
                 else:
                     return{"message":err.msg},400
+            except Exception as e:
+                print(e);
+                if cursor != None:
+                    cursor.rollback();
+                    cursor.close();
+                if db !=None:
+                    db.close();
+                return {"message":e},500
             db = None;#start of new query
             cursor = None;
             try:
@@ -244,7 +289,7 @@ class AddMedicine(Resource):
                     database='project'
                 );
                 cursor = db.cursor();
-                cursor.callproc('insertChemical',(mName[i]));
+                cursor.callproc('insertChemical',[mName[i]]);
                 db.commit();
                 cursor.close();
                 db.close();
@@ -257,13 +302,20 @@ class AddMedicine(Resource):
                 if err.errno == 1644:
                     return{"message":"medicine does not exists in table"},400;
                 return {"message":err.msg},400
+            except Exception as e:
+                if cursor != None:
+                    cursor.rollback();
+                    cursor.close();
+                if db !=None:
+                    db.close();
+                return {"message":e},500
         return {"message":"success"},100;
     
     def post(self):
         args = request.get_json();
         
         if self.checkBody(args) == False:
-            return {"message":"there is an error in the body to get request"},400;
+            return {"message":"there is an error in the body of post request"},400;
         query  = self.genrateQuery(args,"medicine","names","types");
         msg,err = self.insertMedicine(query); 
         if err != 100:
