@@ -117,6 +117,8 @@ class AddMedicine(Resource):
             return False;
         if len(body.get("medicine")["names"]) != len(body.get("medicine")["types"]):
             return False;
+        if len(body.get("chemicals")) !=  len(body.get("medicine")["names"]):
+            return False;
         return True;
 
     def genrateQuery(self,object,objName ,lst1 ,lst2):
@@ -199,7 +201,66 @@ class AddMedicine(Resource):
             insertQuery = insertQuery.format(arg);
         return insertQuery;
          
-    def insertChemical(self,Mname,lst):     
+    def insertChemical(self,mName,lst):  
+        for i in range(0,len(mName)):
+            query = self.getChemicalQuery(lst[i]);
+            db = None;
+            cursor = None; 
+            try:
+                db = mysql.connector.connect(
+                    host="localhost",
+                    user="root",
+                    password="123456",
+                    database='project'
+                );
+                cursor = db.cursor();
+                cursor.execute(query);
+                db.commit();
+                cursor.close();
+                db.close();
+            except mysql.connector.Error as err:
+                if err.errno == 2002:
+                    return {"message":"there was error while trying to connect"},500
+                if cursor != None:#close if cursor exists
+                    cursor.rollback();
+                    cursor.close();
+                if db !=None:#close if db exists
+                    db.close();
+                if err.errno ==  1062:
+                    return{"message":"there was duplicate entry in table"},400
+                if err.errno ==  1064:
+                    return{"message":"there was error  in the syntax"},400
+                if err.errno ==  1452:
+                    return{"message":"there was referential integrity error"},400
+                else:
+                    return{"message":err.msg},400
+            db = None;#start of new query
+            cursor = None;
+            try:
+                db = mysql.connector.connect(
+                    host="localhost",
+                    user="root",
+                    password="123456",
+                    database='project'
+                );
+                cursor = db.cursor();
+                cursor.callproc('insertChemical',(mName[i]));
+                db.commit();
+                cursor.close();
+                db.close();
+            except mysql.connector.Error as err:
+                if cursor != None:
+                    cursor.rollback();
+                    cursor.close();
+                if db !=None:
+                    db.close();
+                if err.errno == 1644:
+                    return{"message":"medicine does not exists in table"},400;
+                return {"message":err.msg},400
+        return {"message":"success"},100;
+    
+    def post(self):
         pass;
 
 api.add_resource(AddDisease,"/add-disease/");
+api.add_resource(AddMedicine,"/add-medicine/")
