@@ -111,7 +111,7 @@ class AddMedicine(Resource):
     def checkBody(self,body):
         if "disease" not in body or "medicine" not in body or "chemicals" not in body:
             return False;
-        if "name" not in body.get("disease") or "type" not in body.get("disease"):
+        if "name" not in body.get("disease"):
             return False;
         if "names" not in body.get("medicine") or  "types" not in body.get("medicine"):
             return False;
@@ -201,9 +201,9 @@ class AddMedicine(Resource):
             insertQuery = insertQuery.format(arg);
         return insertQuery;
          
-    def insertChemical(self,mName,lst):  
+    def insertChemical(self,mName,chemicalList):  
         for i in range(0,len(mName)):
-            query = self.getChemicalQuery(lst[i]);
+            query = self.getChemicalQuery(chemicalList[i]);
             db = None;
             cursor = None; 
             try:
@@ -260,7 +260,24 @@ class AddMedicine(Resource):
         return {"message":"success"},100;
     
     def post(self):
-        pass;
+        args = request.get_json();
+        
+        if self.checkBody(args) == False:
+            return {"message":"there is an error in the body to get request"},400;
+        query  = self.genrateQuery(args,"medicine","names","types");
+        msg,err = self.insertMedicine(query); 
+        if err != 100:
+            return msg,err;
+        msg,err = self.insertTreatement(args.get("disease")["name"]);
+        if err != 100:
+            return msg,err;
+        msg,err = self.insertChemical(args.get("medicine")["names"],args.get("chemicals"));
+        if err !=100:
+            return msg,err;
+        return {"message":"success"},200;
+        
+
+
 
 api.add_resource(AddDisease,"/add-disease/");
 api.add_resource(AddMedicine,"/add-medicine/")
