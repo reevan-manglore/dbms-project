@@ -187,7 +187,9 @@ class AddMedicine(Resource):
                     cursor.close();
                 if db !=None:
                     db.close();
-                return {"message":e},400
+ 
+                return {"message":e},500
+
         return {"message":"success"},100
 
     def insertTreatement(self,dName):
@@ -222,7 +224,11 @@ class AddMedicine(Resource):
                 cursor.close();
              if db !=None:
                 db.close();
-             return {"message":e},400
+ 
+             return {"message":e},500
+ 
+              
+ 
         return {"message":"success"},100
 
     def getChemicalQuery(self,arg):
@@ -278,7 +284,11 @@ class AddMedicine(Resource):
                     cursor.close();
                 if db !=None:
                     db.close();
-                return {"message":e},400
+ 
+                return {"message":e},500
+ 
+                
+ 
             db = None;#start of new query
             cursor = None;
             try:
@@ -308,7 +318,11 @@ class AddMedicine(Resource):
                     cursor.close();
                 if db !=None:
                     db.close();
-                return {"message":e},400
+ 
+                return {"message":e},500
+ 
+                 
+ 
         return {"message":"success"},100;
     
     def post(self):
