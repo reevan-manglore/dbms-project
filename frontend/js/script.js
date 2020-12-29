@@ -1,10 +1,12 @@
+// for creating tabs inside web page
 let tab = document.querySelector(".tabs");
 var instance = M.Tabs.init(tab, {
   duration: 300,
   swipeable: true,
 });
 
-// for chips input of tab-1
+
+//for auto completion
 
 document.addEventListener("DOMContentLoaded", async function () {
   let obj = {};
