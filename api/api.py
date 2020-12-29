@@ -28,7 +28,7 @@ api = Api(app)
 class Disease(Resource):
     def get(self):
         symptoms = request.args.get("symptoms")
-        symptoms = symptoms.strip("[]").split(",")
+        symptoms = symptoms.split(",")
         symptoms = ",".join(map(str, symptoms))
         print("disease are {}".format(symptoms))
         cursor = db.cursor()
@@ -44,6 +44,7 @@ class Disease(Resource):
         cursor.execute(query % (symptoms))
         record = cursor.fetchall()
         cursor.close()
+        print(record);
         return record
 
 
@@ -169,16 +170,18 @@ class MedicineWithChemicals(Resource):
 
 class AutoCompletion(Resource):
     def get(self, table):
-        query = 'select {0} from {1} where {0} like "{2}%"'
+        data = [];
+        #query = 'select {0} from {1} where {0} like "{2}%"'
+        query = 'select distinct {0} from {1}' # this will fetch all data from given table
         val = request.args.get("query")
         if(table == "disease"):
-            query = query.format("dName", table, val)
+            query = query.format("dName", table)
         elif(table == "symptoms"):
-            query = query.format("sName", table, val)
+            query = query.format("sName", table);
         elif(table == "medicine"):
-            query = query.format("mName", table, val)
+            query = query.format("mName", table)
         elif(table == "chemicals"):
-            query = query.format("cName", table, val)
+            query = query.format("cName", table)
         else:
             return {"message": "an error in query parameter"}, 400
         cursor = db.cursor()
@@ -189,7 +192,9 @@ class AutoCompletion(Resource):
             cursor.close()
             return {"message": "error occured"}, 500
         result = cursor.fetchall()
-        return result
+        for i in result:
+            data.append(i[0]);
+        return data;
 
  
 
