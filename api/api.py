@@ -170,6 +170,12 @@ class MedicineWithChemicals(Resource):
 
 class AutoCompletion(Resource):
     def get(self, table):
+        db = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="123456",
+            database='project'
+        )
         data = [];
         #query = 'select {0} from {1} where {0} like "{2}%"'
         query = 'select distinct {0} from {1}' # this will fetch all data from given table
@@ -194,6 +200,7 @@ class AutoCompletion(Resource):
         result = cursor.fetchall()
         for i in result:
             data.append(i[0]);
+        db.close();
         return data;
 
  
