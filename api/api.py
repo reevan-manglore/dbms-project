@@ -87,8 +87,7 @@ class SymptomsAndParts(Resource):
         cursor.execute(query % (disease))
         result = cursor.fetchall()
         cursor.close()
-        return json.dumps(result)
-
+        return result;
 
 class Medicine(Resource):
     def get(self):
