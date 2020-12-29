@@ -1,0 +1,100 @@
+*,::before,::after{
+    margin:0;
+    padding: 0;
+    
+}
+ 
+header,nav{
+    width:100%;
+    position: sticky;
+    top:0;
+    z-index: 999;
+}
+
+nav{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hedding{
+    width: fit-content;
+    color: white;
+    padding: 1rem;
+    font-size: 3rem;
+}
+
+ .pills{
+    margin-top: 20px;
+    display: flex;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+    
+ }
+
+  .pill  a{
+    display: inline-block;
+    padding: 0.5rem 3rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ef9a9a;
+ }
+
+ .pill{
+    border:2px solid #ef9a9a;  
+ }
+
+ .pill-1 {
+     border-radius: 10px 0px 0px 10px;
+    
+ }
+
+ .pill-1 a{
+    color: white;
+ }
+
+ .pill-2{
+    border-radius: 0px 10px 10px 0px;
+ }
+
+ .tabbed-nav{
+     margin-top: 20px;
+     overflow-y: scroll;
+ }
+
+  
+.tabs{
+     color: #e91e63 ;
+     padding-bottom: 2.5rem;
+ }
+
+::-webkit-scrollbar{
+    width: 10px; 
+     /* height: 10px;  */
+}
+
+::-webkit-scrollbar-track{
+    background-color: rgb(220,220,220);
+}
+
+::-webkit-scrollbar-thumb{
+    background-color: #9AEFEF ;
+    
+    border-radius: 500px;
+    width: 5px;
+     
+}
+
+ #win-1 .btns{
+     margin-top: 1rem;
+     margin-bottom: 1rem;
+ }
+
+ #win-1 button{
+     margin-right: 4rem;
+ }
+
+ .output{
+     margin-top: 2rem;
+ }

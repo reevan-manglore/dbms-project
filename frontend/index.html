@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/materialize.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+     <header>
+         <nav class="z-depth-3">
+             <div class="hedding"> Medicine-Database </div>
+     </header>
+     <section class="pills">
+         <div class="pill pill-1 red lighten-3"><a href="#">Query data</a></div>
+         <div class="pill pill-2 "><a href="#">Insert data</a></div>
+     </section>
+
+          <section class="tabbed-nav">
+          <ul class="tabs tabs-fixed-width">
+            <li class="tab"><a class="active" href="#win-1">Get Disease Name</a></li>
+            <li class="tab "><a href="#win-2">Get symptoms Name</a></li>
+            <li class="tab "><a href="#win-3"> Get symptoms Name And Part</a></li>
+            <li class="tab "><a href="#win-4">Get Medicine Name</a></li>
+            <li class="tab "><a href="#win-5">Get Similar Medicine</a></li>
+            <li class="tab "><a href="#win-6">Get Salts Used</a></li>
+            <li class="tab "><a href="#win-7">Get Medicine Name Based On Salts Used</a></li>
+          </ul>
+         
+        <div id="win-1" class="col s12">
+          <section class="tab-1">
+          <form class="input-field">
+            <div class="container">
+            <div class="chips chips-autocomplete chips-placeholder" ></div>
+          </div>
+          <div class="container btns center-align">
+            <button class="btn waves-effect waves-light submit">Submit
+            <i class="material-icons right">send</i>
+            </button>
+            <a class="waves-effect waves-light btn  red lighten-1 reset"><i class="material-icons right">refresh</i>reset</a>
+          </div>
+          </form>
+          </section>
+          <section class="container output"></section>
+
+        </div>
+        <div id="win-2" class="col s12">Test 2</div>
+        <div id="win-3" class="col s12">Test 3</div>
+        <div id="win-4" class="col s12">Test 4</div>
+        <div id="win-5" class="col s12">Test 5</div>
+        <div id="win-6" class="col s12">Test 6</div>
+        <div id="win-7" class="col s12">Test 7</div>
+      </section>
+
+
+      
+            
+</body>
+<script src="./js/materialize.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="./js/script.js"></script>
+  <script src="./js/getData.js"></script>
+</html>
