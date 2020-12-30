@@ -6,7 +6,7 @@ var instance = M.Tabs.init(tab, {
 });
 
 //for auto completion
-function forTab1(params) {
+function forTab1() {
   document.addEventListener("DOMContentLoaded", async function () {
     let obj = {};
     let val = await axios.get("http://127.0.0.1:5000/search/symptoms");
@@ -17,7 +17,7 @@ function forTab1(params) {
     });
     options = {
       placeholder: "Symptoms",
-      secondaryPlaceholder: "more symptoms",
+      secondaryPlaceholder: "+ more symptoms",
       limit: 20,
       autocompleteOptions: {
         data: obj,
@@ -28,20 +28,35 @@ function forTab1(params) {
   });
 }
 
-function autoComplete(type,toClass){
-  document.addEventListener("DOMContentLoaded",async function(){
+function autoComplete(type, winId) {
+  document.addEventListener("DOMContentLoaded", async function () {
     let obj = {};
 
-    let disease = await axios.get("http://127.0.0.1:5000/search/"+type);
+    let disease = await axios.get("http://127.0.0.1:5000/search/" + type);
     let data = disease.data;
-    let ele = document.querySelector(toClass);
-    data.forEach(element => {
+    let ele = document.querySelector(`${winId} .autocomplete`);
+    data.forEach((element) => {
       obj[element] = null;
     });
     var instances = M.Autocomplete.init(ele, {
-      data:obj
+      data: obj,
     });
-  })
+  });
 }
 
-autoComplete("disease",".tab-2 .autocomplete");
+forTab1();
+
+autoComplete("disease", "#win-2");
+
+autoComplete("disease","#win-3");
+
+
+autoComplete("disease","#win-4");
+
+autoComplete("medicine","#win-5");
+
+autoComplete("medicine","#win-6");
+
+autoComplete("chemicals","#win-7");
+
+

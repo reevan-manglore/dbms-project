@@ -102,34 +102,41 @@ var tab1 = {
 tab1.submit();
 tab1.reset();
 
-function FetchData(what, queryName) {
-  this.toUrl = what;
-  this.qName = queryName;
+function Data(urlEndPoint, queryParameterName) {
+  this.toUrl = urlEndPoint;
+  this.qName = queryParameterName;
   this.qArg = "";
   this.data = null;
-  this.createTable =   function (head1, head2, data) {
+  this.createTable = function (head1, head2, data) {
     let table = document.createElement("table");
     table.classList.add("striped");
     let tabelHead = document.createElement("thead");
     let tr = document.createElement("tr");
     let th = document.createElement("th");
+    th.classList.add("center-align");
     let text = document.createTextNode(head1);
     th.appendChild(text);
     tr.appendChild(th);
     th = document.createElement("th");
+    th.classList.add("center-align");
     text = document.createTextNode(head2);
     th.appendChild(text);
     tr.appendChild(th);
     tabelHead.appendChild(tr);
     let tBody = document.createElement("tbody");
+    
     data.forEach((element) => {
       let tr = document.createElement("tr");
-      let td = document.createElement("td");
+      let td1 = document.createElement("td");
+      td1.classList.add("center-align");
       let text = document.createTextNode(element[0]);
-      td.appendChild(text);
+      td1.appendChild(text);
+      let td2 = document.createElement("td");
+      td2.classList.add("center-align");
       text = document.createTextNode(element[1]);
-      td.appendChild(text);
-      tr.appendChild(td);
+      td2.appendChild(text);
+      tr.appendChild(td1);
+      tr.appendChild(td2);
       tBody.appendChild(tr);
     });
     table.appendChild(tabelHead);
@@ -162,13 +169,13 @@ function FetchData(what, queryName) {
     parameters = {};
     parameters["params"] = {};
     parameters["params"][this.qName] = this.qArg;
-    let res = await axios.get("http://127.0.0.1:5000/" + what, parameters);
+    let res = await axios.get("http://127.0.0.1:5000/" + urlEndPoint, parameters);
     console.log(res.data);
     this.data = res.data;
     return res.data;
   };
 
-  this.submitTable = async function (head1, head2,window) {
+  this.newTable = async function (head1, head2, window) {
     let val = document.querySelector(`${window} input`).value;
     console.log(val);
     this.qArg = val;
@@ -176,18 +183,34 @@ function FetchData(what, queryName) {
     console.log(data);
     let table = this.createTable(head1, head2, data);
     let cont = document.querySelector(`${window} .output`);
-    cont.appendChild(table);
+    if (cont.querySelector("table") != null) {
+      cont.querySelector("table").remove();
+    }
+    cont.querySelector(".preloader-wrapper").style.display = "block";
+    setTimeout(() => {
+        cont.querySelector(".preloader-wrapper").style.display = "none";
+        cont.appendChild(table);
+    }, 500);
+   // cont.appendChild(table);
   };
 
-  this.submitCollection = async function (head1,window) {
+  this.newCollection = async function (head1, window) {
     let val = document.querySelector(`${window} input`).value;
     console.log(val);
     this.qArg = val;
     let data = await this.startFetch();
     console.log(data);
-    let collection =  this.createCollection(head1, data);
+    let collection = this.createCollection(head1, data);
     let cont = document.querySelector(`${window} .output`);
-    cont.appendChild(collection);
+    if (cont.querySelector(".collection") != null) {
+      cont.querySelector(".collection").remove();
+    }
+    cont.querySelector(".preloader-wrapper").style.display = "block";
+    setTimeout(() => {
+        cont.querySelector(".preloader-wrapper").style.display = "none";
+        cont.appendChild(collection);
+    }, 500);
+    // cont.appendChild(collection);
   };
 
   this.reset = function (from) {
@@ -203,19 +226,49 @@ function FetchData(what, queryName) {
   return this;
 }
 
-tab2 = FetchData("symptoms","disease");
-
-document.querySelector(".tab-2 .submit").addEventListener("click",(e)=>{
+function getData(tab, winId, head1, head2 = null) {
+  document.querySelector(`${winId} .submit`).addEventListener("click", (e) => {
     e.preventDefault();
-    tab2.submitCollection("symptoms","#win-2");
-});
-
-document.querySelector(".tab-2 .reset").addEventListener("click",(e)=>{
+    if(document.querySelector(`${winId} input`).value == ""){
+        return;
+    }
+    if (head2 == null) {
+      tab.newCollection(head1, winId);
+    } else {
+      tab.newTable(head1, head2, winId);
+    }
+  });
+  document.querySelector(`${winId} .reset`).addEventListener("click", (e) => {
     e.preventDefault();
-    tab2.reset("#win-2")
-    
-});
+    tab2.reset(winId);
+  });
+}
 
- 
+tab2 = Data("symptoms", "disease");
+getData(tab2, "#win-2", "symptoms");
 
- 
+
+
+tab3 = Data("symptoms-and-parts","disease");
+getData(tab3,"#win-3","symptoms","parts");
+
+
+
+tab4 = Data("medicines","disease");
+getData(tab4,"#win-4","Medicine","Mode Of Admistration");
+
+
+
+tab5 = Data("similar-medicines","medicine");
+getData(tab5,"#win-5","Medicine","Mode Of Admistration");
+
+
+
+tab6 = Data("show-chemicals","medicine");
+getData(tab6,"#win-6","Salts");
+
+
+
+
+tab7 = Data("medicine-with-chemical","chemical");
+getData(tab7,"#win-7","Medicine Names");
