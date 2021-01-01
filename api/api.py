@@ -28,7 +28,7 @@ api = Api(app)
 class Disease(Resource):
     def get(self):
         symptoms = request.args.get("symptoms")
-        symptoms = symptoms.strip("[]").split(",")
+        symptoms = symptoms.split(",")
         symptoms = ",".join(map(str, symptoms))
         print("disease are {}".format(symptoms))
         cursor = db.cursor()
@@ -44,6 +44,7 @@ class Disease(Resource):
         cursor.execute(query % (symptoms))
         record = cursor.fetchall()
         cursor.close()
+        print(record);
         return record
 
 
@@ -86,8 +87,7 @@ class SymptomsAndParts(Resource):
         cursor.execute(query % (disease))
         result = cursor.fetchall()
         cursor.close()
-        return json.dumps(result)
-
+        return result;
 
 class Medicine(Resource):
     def get(self):
@@ -118,7 +118,7 @@ class SimilarMedicines(Resource):
             where mId in (
 	        select similar
 	        from  similarMedicine
-	        where mId in ( select m.mId
+	        where mId in ( select s.mId
 				 from medicine m,similarMedicine s
                  where m.mId = s.similar
                  and m.mName = "%s"
@@ -169,16 +169,24 @@ class MedicineWithChemicals(Resource):
 
 class AutoCompletion(Resource):
     def get(self, table):
-        query = 'select {0} from {1} where {0} like "{2}%"'
+        db = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="123456",
+            database='project'
+        )
+        data = [];
+        #query = 'select {0} from {1} where {0} like "{2}%"'
+        query = 'select distinct {0} from {1}' # this will fetch all data from given table
         val = request.args.get("query")
         if(table == "disease"):
-            query = query.format("dName", table, val)
+            query = query.format("dName", table)
         elif(table == "symptoms"):
-            query = query.format("sName", table, val)
+            query = query.format("sName", table);
         elif(table == "medicine"):
-            query = query.format("mName", table, val)
+            query = query.format("mName", table)
         elif(table == "chemicals"):
-            query = query.format("cName", table, val)
+            query = query.format("cName", table)
         else:
             return {"message": "an error in query parameter"}, 400
         cursor = db.cursor()
@@ -189,7 +197,10 @@ class AutoCompletion(Resource):
             cursor.close()
             return {"message": "error occured"}, 500
         result = cursor.fetchall()
-        return result
+        for i in result:
+            data.append(i[0]);
+        db.close();
+        return data;
 
  
 
