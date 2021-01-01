@@ -118,7 +118,7 @@ class SimilarMedicines(Resource):
             where mId in (
 	        select similar
 	        from  similarMedicine
-	        where mId in ( select m.mId
+	        where mId in ( select s.mId
 				 from medicine m,similarMedicine s
                  where m.mId = s.similar
                  and m.mName = "%s"

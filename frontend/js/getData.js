@@ -165,11 +165,12 @@ function Data(urlEndPoint, queryParameterName) {
   };
 
   this.startFetch = async function () {
+    console.log(this.toUrl)
     url = "http://127.0.0.1:5000/";
     parameters = {};
     parameters["params"] = {};
     parameters["params"][this.qName] = this.qArg;
-    let res = await axios.get("http://127.0.0.1:5000/" + urlEndPoint, parameters);
+    let res = await axios.get("http://127.0.0.1:5000/" + this.toUrl, parameters);
     console.log(res.data);
     this.data = res.data;
     return res.data;
@@ -244,31 +245,31 @@ function getData(tab, winId, head1, head2 = null) {
   });
 }
 
-tab2 = Data("symptoms", "disease");
+tab2 = new Data("symptoms", "disease");
 getData(tab2, "#win-2", "symptoms");
 
 
 
-tab3 = Data("symptoms-and-parts","disease");
+tab3 = new Data("symptoms-and-parts","disease");
 getData(tab3,"#win-3","symptoms","parts");
 
 
 
-tab4 = Data("medicines","disease");
+tab4 = new Data("medicines","disease");
 getData(tab4,"#win-4","Medicine","Mode Of Admistration");
 
 
 
-tab5 = Data("similar-medicines","medicine");
+tab5 = new Data("similar-medicines","medicine");
 getData(tab5,"#win-5","Medicine","Mode Of Admistration");
 
 
 
-tab6 = Data("show-chemicals","medicine");
+tab6 = new Data("show-chemicals","medicine");
 getData(tab6,"#win-6","Salts");
 
 
 
 
-tab7 = Data("medicine-with-chemical","chemical");
+tab7 = new Data("medicine-with-chemical","chemical");
 getData(tab7,"#win-7","Medicine Names");
