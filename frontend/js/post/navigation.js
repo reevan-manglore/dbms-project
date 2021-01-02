@@ -71,7 +71,7 @@ tab1 = {
   renderForm: function (cssClass) {
     let item = this.createSymptomsForm();
     document.querySelector(cssClass).appendChild(item);
-    autoComplete("symptoms",`#symptom-name-${this.symptomCount}`);
+    autoComplete("symptoms", `#symptom-name-${this.symptomCount}`);
     this.lastCreatedForm = document.querySelector(
       `.symptom-${this.symptomCount}`
     );
@@ -117,6 +117,14 @@ tab1 = {
   },
 
   checkForBlankField: function () {
+    let dName = document.querySelector("#tab1-disease-name");
+    if (dName.value.trim() == "") {
+      M.toast({
+        html: `disease name is left out blank`,
+        classes: "red lighten-1",
+      });
+      return true;
+    }
     let blankField = 0;
     for (const iterator of this.symptomArray) {
       let ele = document.querySelector(`.symptom-${iterator}`);
@@ -130,8 +138,75 @@ tab1 = {
         html: `${blankField} fields are left out blank`,
         classes: "red lighten-1",
       });
+      return true;
     }
+    return false;
   },
+  getFormData: function () {
+    data = {
+      disease: {},
+      symptoms: {},
+    };
+    let dName = document.querySelector("#tab1-disease-name");
+    dName = dName.value.trim();
+    data["disease"]["name"] = dName;
+    let dType = document.querySelector("#tab1-disease-type").value.trim();
+    if (dType == "") {
+      dType = "undefined";
+    }
+    data["disease"]["type"] = dType;
+    let symptoms = [];
+    for (const iterator of this.symptomArray) {
+      //add extra code here for pre processing of the data ;
+      symptoms.push(
+        document.querySelector(`#symptom-name-${iterator}`).value.trim()
+      );
+    }
+    data["symptoms"]["names"] = symptoms;
+    let sParts = [];
+    for (const iterator of this.symptomArray) {
+      let part = document
+        .querySelector(`#symptom-type-${iterator}`)
+        .value.trim();
+      if (part == "") {
+        part = "undefined";
+      }
+      sParts.push(part);
+    }
+    data["symptoms"]["parts"] = sParts;
+    return data;
+  },
+  resetForm: function () {
+    let form = document.querySelector("#win-1 form");
+    for (const iterator of this.symptomArray) {
+      let ele = document.querySelector(`.symptom-${iterator}`);
+      ele.remove();
+    }
+    this.symptomArray = [];
+    form.reset();
+    tab1.renderForm(".symptoms-input");
+  },
+
+  submitForm:async function (){
+  if(tab1.checkForBlankField() == true){
+    return;
+  }
+  let data = tab1.getFormData();
+  try{
+    let res = await axios.post("http://127.0.0.1:5000/post/add-disease/",data);
+    M.toast({
+      html: res.data.message,
+      classes: "green lighten-1",
+    });
+   tab1.resetForm();
+  }
+  catch(error){
+    M.toast({
+      html: error.data.message,
+      classes: "red lighten-1",
+    });
+  }
+}
 };
 
 tab1.renderForm(".symptoms-input");
@@ -152,12 +227,8 @@ addBtn.addEventListener("click", (e) => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  autoComplete("disease",".disease-name")
-  
+  autoComplete("disease", ".disease-name");
 });
-
-
-
 
 async function autoComplete(type, to) {
   let obj = {};
@@ -165,13 +236,12 @@ async function autoComplete(type, to) {
   let data = disease.data;
   console.log(data);
   let ele;
-  if(to.includes("#")){
+  if (to.includes("#")) {
     ele = document.querySelector(to);
-  }
-  else{
+  } else {
     ele = document.querySelectorAll(`${to} .autocomplete`);
   }
-  
+
   console.log(ele);
   data.forEach((element) => {
     obj[element] = null;
@@ -180,3 +250,16 @@ async function autoComplete(type, to) {
     data: obj,
   });
 }
+
+
+
+document.querySelector("#win-1 .submit").addEventListener("click",e=>{
+  e.preventDefault();
+  tab1.submitForm();
+})
+
+document.querySelector("#win-1 .reset").addEventListener("click",e=>{
+  console.log("clicked")
+  e.preventDefault();
+  tab1.resetForm();
+})

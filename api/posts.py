@@ -1,7 +1,7 @@
 from typing import Type
 from flask import Blueprint,request;
 from flask_restful import Resource,Api
-from flask_cors import CORS;
+from flask_cors import CORS,cross_origin;
 import mysql.connector;
 from mysql.connector import cursor,errorcode;
  
@@ -11,7 +11,6 @@ post = Blueprint("posts.py",__name__);
 CORS(post);
 
 api = Api(post);
-
 
   
  
@@ -124,7 +123,7 @@ class AddDisease(Resource):
             return message,err;
         return {"message":"success"},200
 
-
+ 
 class AddMedicine(Resource):
     def checkBody(self,body):
         if "disease" not in body or "medicine" not in body or "chemicals" not in body:
@@ -325,7 +324,9 @@ class AddMedicine(Resource):
  
         return {"message":"success"},100;
     
+    @cross_origin()
     def post(self):
+        print("request recived");
         args = request.get_json();
         
         if self.checkBody(args) == False:
