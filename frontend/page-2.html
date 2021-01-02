@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/materialize.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="./css/post/post-style.css">
+</head>
+<body>
+
+
+     <header>
+         <nav class="z-depth-3">
+             <div class="hedding"> Medicine-Database </div>
+     </header>
+    <section class="pills">
+         <div class="pill pill-1  "><a href="./index.html">Query data</a></div>
+         <div class="pill pill-2  red lighten-3"><a href="#">Insert data</a></div>
+    </section>
+
+    <section class = "tabbed-nav">
+    <div class="row">
+        <div class="col s12">
+          <ul class="tabs">
+            <li class="tab col s6"><a href="#win-1" class="active">Add Disease</a></li>
+            <li class="tab col s6"><a  href="#win-2">Add Medicine</a></li>
+            
+          </ul>
+        </div>
+        <div id="win-1" class="col s12">
+            <section class = "tab-1-input ">
+                <form >
+                    <div class="row">
+                        <div class="col s12">
+                          <div class="row">
+                            <div class="input-field col s6 disease-name">
+                              <input type="text" id="autocomplete-input-1" class="autocomplete" autocomplete="off">
+                              <label for="autocomplete-input-1">Disease Name</label>
+                            </div>
+                            <div class="input-field col s6 disease-type">
+                                <input type="text" id="autocomplete-input-2" class="autocomplete">
+                                <label for="autocomplete-input-2">Disease Type</label>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                        <div class = "symptoms-container">
+                        <div class="symptoms">
+                        <p class="symptoms-label"> + Add Symptoms</p>
+                      <section class="symptoms-input">
+                      <!-- test boxes to take user input goes here-->
+                      </section>
+                      <div class="symptoms-add-btn-container">
+                      <a class="btn-floating btn-large waves-effect waves-light green lighten-1 symptoms-add-btn"><i class="material-icons">add</i></a>
+                    </div>
+                    </div>
+                      </div>
+                      <div class="container btns form-btns center-align">
+                        <button class="btn waves-effect waves-light submit">Submit
+                          <i class="material-icons right">send</i>
+                        </button>
+                          <a class="waves-effect waves-light btn  red lighten-1 reset"><i class="material-icons right">refresh</i>reset</a>
+                      </div>
+                </form>
+            </section>
+        </div>
+        <div id="win-2" class="col s12">
+
+
+          <section class = "tab-2-input ">
+            <form >
+                <div class="row">
+                    <div class="col s12">
+                       <div class="container">
+                        <div class="input-field disease-name">
+                          <input type="text" id="tab2-disease-name" class="autocomplete">
+                          <label for="tab2-disease-name">Disease Name</label>
+                        </div>
+
+                       </div>
+                      </div>
+                    </div>
+
+                    <div class = "medicine-container">
+                    <div class="medicine">
+                    <p class="medicine-label"> + Add medicine</p>
+                  <section class="medicines-input">
+                  <!-- test boxes to take user input goes here-->
+                  </section>
+                  <div class="medicine-add-btn-container">
+                  <a class="btn-floating btn-large waves-effect waves-light green lighten-1 medicine-add-btn"><i class="material-icons">add</i></a>
+                </div>
+                </div>
+                  </div>
+                  <div class="container btns form-btns center-align">
+                    <button class="btn waves-effect waves-light medicine-submit">Submit
+                      <i class="material-icons right">send</i>
+                    </button>
+                      <a class="waves-effect waves-light btn  red lighten-1 medicine-reset"><i class="material-icons right">refresh</i>reset</a>
+                  </div>
+            </form>
+        </section>
+
+
+
+
+        </div>
+      </div>
+            
+    </section>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="./js/materialize.js"></script>
+<script src="./js/post/navigation.js"></script>
+<script src="./js/post/post-medicine.js"></script>
+ </html>
