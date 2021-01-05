@@ -119,6 +119,7 @@ tab1 = {
   checkForBlankField: function () {
     let dName = document.querySelector("#tab1-disease-name");
     if (dName.value.trim() == "") {
+      console.log("from file function called")
       M.toast({
         html: `disease name is left out blank`,
         classes: "red lighten-1",
@@ -255,6 +256,7 @@ async function autoComplete(type, to) {
 
 document.querySelector("#win-1 .submit").addEventListener("click",e=>{
   e.preventDefault();
+  console.log("event listener from file 1 called")
   tab1.submitForm();
 })
 

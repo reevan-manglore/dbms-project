@@ -5,20 +5,12 @@ from flask_cors import CORS
 import mysql.connector
 from mysql.connector import cursor
 import json
-from posts import post;
- 
+from posts import post
 
-
-db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="123456",
-    database='project'
-)
 
 app = Flask(__name__)
 
-app.register_blueprint(post,url_prefix = "/post/")
+app.register_blueprint(post, url_prefix="/post/")
 
 CORS(app)
 
@@ -27,6 +19,13 @@ api = Api(app)
 
 class Disease(Resource):
     def get(self):
+        db = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="123456",
+            database='project'
+        )
+
         symptoms = request.args.get("symptoms")
         symptoms = symptoms.split(",")
         symptoms = ",".join(map(str, symptoms))
@@ -44,12 +43,19 @@ class Disease(Resource):
         cursor.execute(query % (symptoms))
         record = cursor.fetchall()
         cursor.close()
-        print(record);
+        print(record)
         return record
 
 
 class Symptoms(Resource):
     def get(self):
+        db = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="123456",
+            database='project'
+        )
+
         disease = request.args.get("disease")
         print("disease names are = %s" % (disease))
         query = """
@@ -74,6 +80,13 @@ class Symptoms(Resource):
 
 class SymptomsAndParts(Resource):
     def get(self):
+        db = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="123456",
+            database='project'
+        )
+
         disease = request.args.get("disease")
         print("disease names are = %s" % (disease))
         query = """
@@ -87,10 +100,18 @@ class SymptomsAndParts(Resource):
         cursor.execute(query % (disease))
         result = cursor.fetchall()
         cursor.close()
-        return result;
+        return result
+
 
 class Medicine(Resource):
     def get(self):
+        db = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="123456",
+            database='project'
+        )
+
         query = """
               select mName,modeOfAdministration
               from medicine
@@ -112,6 +133,13 @@ class Medicine(Resource):
 
 class SimilarMedicines(Resource):
     def get(self):
+        db = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="123456",
+            database='project'
+        )
+
         query = """
             select mName,modeOfAdministration
             from medicine
@@ -135,6 +163,13 @@ class SimilarMedicines(Resource):
 
 class Chemicals(Resource):
     def get(self):
+        db = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="123456",
+            database='project'
+        )
+
         query = """
             select cName
             from chemicals
@@ -153,6 +188,13 @@ class Chemicals(Resource):
 
 class MedicineWithChemicals(Resource):
     def get(self):
+        db = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="123456",
+            database='project'
+        )
+
         query = """
             select mName
             from medicine m,chemicals c,medicineContents cc
@@ -175,14 +217,15 @@ class AutoCompletion(Resource):
             password="123456",
             database='project'
         )
-        data = [];
+        data = []
         #query = 'select {0} from {1} where {0} like "{2}%"'
-        query = 'select distinct {0} from {1}' # this will fetch all data from given table
+        # this will fetch all data from given table
+        query = 'select distinct {0} from {1}'
         val = request.args.get("query")
         if(table == "disease"):
             query = query.format("dName", table)
         elif(table == "symptoms"):
-            query = query.format("sName", table);
+            query = query.format("sName", table)
         elif(table == "medicine"):
             query = query.format("mName", table)
         elif(table == "chemicals"):
@@ -198,12 +241,9 @@ class AutoCompletion(Resource):
             return {"message": "error occured"}, 500
         result = cursor.fetchall()
         for i in result:
-            data.append(i[0]);
-        db.close();
-        return data;
-
- 
-
+            data.append(i[0])
+        db.close()
+        return data
 
 
 api.add_resource(Disease, "/disease/")
