@@ -115,6 +115,7 @@ tab2 = {
   checkForBlankField: function () {
     let dName = document.querySelector("#tab2-disease-name");
     if(dName.value.trim() == ""){
+      console.log("from file 2 function called");
       M.toast({
         html: `disease name is left out blank`,
         classes: "red lighten-1",
@@ -191,17 +192,17 @@ tab2 = {
     tab2.renderForm(".medicines-input");
   },
   submitForm:async function (){
-    if(tab1.checkForBlankField() == true){
+    if(tab2.checkForBlankField() == true){
       return;
     }
-    let data = tab1.getFormData();
+    let data = tab2.getFormData();
     try{
       let res = await axios.post("http://127.0.0.1:5000/post/add-medicine/",data);
       M.toast({
         html: res.data.message,
         classes: "green lighten-1",
       });
-     tab1.resetForm();
+     tab2.resetForm();
     }
     catch(error){
       console.log(error)
@@ -321,7 +322,8 @@ async function updateAutoComplete(type, to) {
 //   }
 // }
 
-document.querySelector("#win-2 .submit").addEventListener("click",e=>{
+document.querySelector(".tab2-submit").addEventListener("click",e=>{
+  console.log("event listener for file 2 called");
   e.preventDefault();
   tab2.submitForm();
 })
