@@ -200,6 +200,9 @@ tab1 = {
       classes: "green lighten-1",
     });
    tab1.resetForm();
+   autoComplete("disease", "#tab1-disease-name")
+   autoComplete("disease", "#tab2-disease-name")
+   autoComplete("symptoms", ".symptom-name input") 
   }
   catch(error){
     M.toast({
