@@ -379,6 +379,12 @@ form{
   font-size: 30px;
 }
 
+#toast-container {
+    position: fixed !important;
+    bottom: 10% !important;
+    left: 50% !important;
+}
+
 /* 
 .alert-container{
   position: fixed;
