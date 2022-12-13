@@ -64,74 +64,74 @@ informed decisions.
 ### Home Page & Editing Page
 
 <span>
-  <img src = "./screenshots/home-page.png" width = "200px"/>  
+  <img src = "./screenshots/home-page.png" width = "600px"/>  
     &ensp; &ensp;
 </span>
 
 <span>
-  <img src = " ./screenshots/add-new-entry-page.png" width = "200px"/>
+  <img src = " ./screenshots/add-new-entry-page.png" width = "600px"/>
      &ensp; &ensp;
  </span>
 
 ### Autocomplete Demo
 
 <span>
-  <img src = "./screenshots/autocomplete-demo.png" width = "200px"/>
+  <img src = "./screenshots/autocomplete-demo.png" width = "600px"/>
      &ensp; &ensp;
  </span>
 
 ### Disease Search Demo
 
 <span>
-  <img src = "./screenshots/diesease-search.png" width = "200px"/>
+  <img src = "./screenshots/diesease-search.png" width = "600px"/>
      &ensp; &ensp;
  </span>
 
 ### Symptom Search Demo
 
 <span>
-  <img src = "./screenshots/symptom_search.png" width = "200px"/>
+  <img src = "./screenshots/symptom_search.png" width = "600px"/>
      &ensp; &ensp;
  </span>
 
 ### Medicine Search Demo
 
 <span>
-  <img src = "./screenshots/medicine-search.png" width = "200px"/>
+  <img src = "./screenshots/medicine-search.png" width = "600px"/>
      &ensp; &ensp;
  </span>
 
 ### Similar Medicine Search Demo
 
 <span>
-  <img src = "./screenshots/query-similar-medicine.png" width = "200px"/>
+  <img src = "./screenshots/query-similar-medicine.png" width = "600px"/>
      &ensp; &ensp;
  </span>
 
 ### Query Medicine Composition Demo
 
 <span>
-  <img src = "./screenshots/query-composition.png" width = "200px"/>
+  <img src = "./screenshots/query-composition.png" width = "600px"/>
      &ensp; &ensp;
  </span>
 
 ## Query Medicine Based On Composition Demo
 
 <span>
-  <img src = "./screenshots/query-medicine-based-on-salt.png" width = "200px"/>
+  <img src = "./screenshots/query-medicine-based-on-salt.png" width = "600px"/>
      &ensp; &ensp;
  </span>
 
 ## Add New Entry Page Demo
 
 <span>
-  <img src = "./screenshots/add-new-medicine.png" width = "200px"/>
+  <img src = "./screenshots/add-new-medicine.png" width = "600px"/>
      &ensp; &ensp;
  </span>
 
 ## Add new entry Success Demo.
 
 <span>
-  <img src = "./screenshots/medicine-add-success.png" width = "200px"/>
+  <img src = "./screenshots/medicine-add-success.png" width = "600px"/>
      &ensp; &ensp;
  </span>
